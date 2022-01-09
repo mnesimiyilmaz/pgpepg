@@ -1,0 +1,56 @@
+version: '3.9'
+
+networks:
+  n-pgpepg:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:12
+    container_name: postgres-server
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=root
+    networks:
+      - n-pgpepg
+
+  postgres-exporter:
+    image: bitnami/postgres-exporter:0.10.0-debian-10-r170
+    container_name: postgres-exporter
+    restart: unless-stopped
+    ports:
+      - '9187:9187'
+    environment:
+      - DATA_SOURCE_NAME=postgresql://postgres:root@postgres-server:5432/?sslmode=disable
+    networks:
+      - n-pgpepg
+    depends_on:
+      - postgres
+
+  prometheus:
+    image: prom/prometheus:v2.32.1
+    container_name: prometheus-server
+    restart: unless-stopped
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - n-pgpepg
+    depends_on:
+      - postgres-exporter
+
+  grafana:
+    image: grafana/grafana-oss:8.3.3
+    container_name: grafana-server
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - n-pgpepg
+    depends_on:
+      - prometheus
