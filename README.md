@@ -1,4 +1,4 @@
-# pgpepg <font size="3">([PostgreSQL](https://www.postgresql.org)/[Postgres-Exporter](https://github.com/prometheus-community/postgres_exporter)/[Prometheus](https://prometheus.io)/[Grafana](https://grafana.com/oss/grafana))</font>
+# pgpepg ([PostgreSQL](https://www.postgresql.org)/[Postgres-Exporter](https://github.com/prometheus-community/postgres_exporter)/[Prometheus](https://prometheus.io)/[Grafana](https://grafana.com/oss/grafana))
 
 Try the Grafana [PostgreSQL Dashboard](https://grafana.com/grafana/dashboards/9628) with zero effort.
 
